@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.house.Dao.EmployeeMapper">
+  <resultMap id="BaseResultMap" type="com.house.Bean.Employee">
+    <id column="emp_id" jdbcType="INTEGER" property="empId" />
+    <result column="emp_name" jdbcType="VARCHAR" property="empName" />
+    <result column="emp_phone" jdbcType="VARCHAR" property="empPhone" />
+    <result column="emp_part" jdbcType="VARCHAR" property="empPart" />
+    <result column="emp_job" jdbcType="VARCHAR" property="empJob" />
+    <result column="emp_area" jdbcType="VARCHAR" property="empArea" />
+    <result column="emp_entry" jdbcType="VARCHAR" property="empEntry" />
+    <result column="emp_type" jdbcType="INTEGER" property="empType" />
+    <result column="emp_uname" jdbcType="VARCHAR" property="empUname" />
+    <result column="emp_password" jdbcType="VARCHAR" property="empPassword" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    emp_id, emp_name, emp_phone, emp_part, emp_job, emp_area, emp_entry, emp_type, emp_uname, 
+    emp_password
+  </sql>
+  <select id="selectByExample" parameterType="com.house.Bean.EmployeeExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from employee
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from employee
+    where emp_id = #{empId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from employee
+    where emp_id = #{empId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.house.Bean.EmployeeExample">
+    delete from employee
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.house.Bean.Employee">
+    insert into employee (emp_id, emp_name, emp_phone, 
+      emp_part, emp_job, emp_area, 
+      emp_entry, emp_type, emp_uname, 
+      emp_password)
+    values (#{empId,jdbcType=INTEGER},#{empName,jdbcType=VARCHAR}, #{empPhone,jdbcType=VARCHAR},
+      #{empPart,jdbcType=VARCHAR}, #{empJob,jdbcType=VARCHAR}, #{empArea,jdbcType=VARCHAR},
+      #{empEntry,jdbcType=VARCHAR}, #{empType,jdbcType=INTEGER}, #{empUname,jdbcType=VARCHAR},
+      #{empPassword,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.house.Bean.Employee">
+    insert into employee
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="empId != null">
+        emp_id,
+      </if>
+      <if test="empName != null">
+        emp_name,
+      </if>
+      <if test="empPhone != null">
+        emp_phone,
+      </if>
+      <if test="empPart != null">
+        emp_part,
+      </if>
+      <if test="empJob != null">
+        emp_job,
+      </if>
+      <if test="empArea != null">
+        emp_area,
+      </if>
+      <if test="empEntry != null">
+        emp_entry,
+      </if>
+      <if test="empType != null">
+        emp_type,
+      </if>
+      <if test="empUname != null">
+        emp_uname,
+      </if>
+      <if test="empPassword != null">
+        emp_password,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="empId != null">
+        #{empId,jdbcType=INTEGER},
+      </if>
+      <if test="empName != null">
+        #{empName,jdbcType=VARCHAR},
+      </if>
+      <if test="empPhone != null">
+        #{empPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="empPart != null">
+        #{empPart,jdbcType=VARCHAR},
+      </if>
+      <if test="empJob != null">
+        #{empJob,jdbcType=VARCHAR},
+      </if>
+      <if test="empArea != null">
+        #{empArea,jdbcType=VARCHAR},
+      </if>
+      <if test="empEntry != null">
+        #{empEntry,jdbcType=VARCHAR},
+      </if>
+      <if test="empType != null">
+        #{empType,jdbcType=INTEGER},
+      </if>
+      <if test="empUname != null">
+        #{empUname,jdbcType=VARCHAR},
+      </if>
+      <if test="empPassword != null">
+        #{empPassword,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.house.Bean.EmployeeExample" resultType="java.lang.Long">
+    select count(*) from employee
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update employee
+    <set>
+      <if test="record.empId != null">
+        emp_id = #{record.empId,jdbcType=INTEGER},
+      </if>
+      <if test="record.empName != null">
+        emp_name = #{record.empName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.empPhone != null">
+        emp_phone = #{record.empPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.empPart != null">
+        emp_part = #{record.empPart,jdbcType=VARCHAR},
+      </if>
+      <if test="record.empJob != null">
+        emp_job = #{record.empJob,jdbcType=VARCHAR},
+      </if>
+      <if test="record.empArea != null">
+        emp_area = #{record.empArea,jdbcType=VARCHAR},
+      </if>
+      <if test="record.empEntry != null">
+        emp_entry = #{record.empEntry,jdbcType=VARCHAR},
+      </if>
+      <if test="record.empType != null">
+        emp_type = #{record.empType,jdbcType=INTEGER},
+      </if>
+      <if test="record.empUname != null">
+        emp_uname = #{record.empUname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.empPassword != null">
+        emp_password = #{record.empPassword,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update employee
+    set emp_id = #{record.empId,jdbcType=INTEGER},
+      emp_name = #{record.empName,jdbcType=VARCHAR},
+      emp_phone = #{record.empPhone,jdbcType=VARCHAR},
+      emp_part = #{record.empPart,jdbcType=VARCHAR},
+      emp_job = #{record.empJob,jdbcType=VARCHAR},
+      emp_area = #{record.empArea,jdbcType=VARCHAR},
+      emp_entry = #{record.empEntry,jdbcType=VARCHAR},
+      emp_type = #{record.empType,jdbcType=INTEGER},
+      emp_uname = #{record.empUname,jdbcType=VARCHAR},
+      emp_password = #{record.empPassword,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.house.Bean.Employee">
+    update employee
+    <set>
+      <if test="empName != null">
+        emp_name = #{empName,jdbcType=VARCHAR},
+      </if>
+      <if test="empPhone != null">
+        emp_phone = #{empPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="empPart != null">
+        emp_part = #{empPart,jdbcType=VARCHAR},
+      </if>
+      <if test="empJob != null">
+        emp_job = #{empJob,jdbcType=VARCHAR},
+      </if>
+      <if test="empArea != null">
+        emp_area = #{empArea,jdbcType=VARCHAR},
+      </if>
+      <if test="empEntry != null">
+        emp_entry = #{empEntry,jdbcType=VARCHAR},
+      </if>
+      <if test="empType != null">
+        emp_type = #{empType,jdbcType=INTEGER},
+      </if>
+      <if test="empUname != null">
+        emp_uname = #{empUname,jdbcType=VARCHAR},
+      </if>
+      <if test="empPassword != null">
+        emp_password = #{empPassword,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where emp_id = #{empId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.house.Bean.Employee">
+    update employee
+    set emp_name = #{empName,jdbcType=VARCHAR},
+      emp_phone = #{empPhone,jdbcType=VARCHAR},
+      emp_part = #{empPart,jdbcType=VARCHAR},
+      emp_job = #{empJob,jdbcType=VARCHAR},
+      emp_area = #{empArea,jdbcType=VARCHAR},
+      emp_entry = #{empEntry,jdbcType=VARCHAR},
+      emp_type = #{empType,jdbcType=INTEGER},
+      emp_uname = #{empUname,jdbcType=VARCHAR},
+      emp_password = #{empPassword,jdbcType=VARCHAR}
+    where emp_id = #{empId,jdbcType=INTEGER}
+  </update>
+  <select id="userIsExist" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select * from employee where emp_uname = #{empUName,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select * from employee
+  </select>
+  <select id="selectByArea" parameterType="map" resultMap="BaseResultMap">
+    select * from employee where emp_type &lt; #{empType} and emp_area={empArea,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByPart" parameterType="map" resultMap="BaseResultMap">
+    select * from employee where  emp_type &lt; #{empType} and emp_area={empArea,jdbcType=VARCHAR} and emp_part={empPart,jdbcType=VARCHAR}
+  </select>
+  <select id="checkLogin" parameterType="java.lang.String">
+    select password from employee where emp_uname = #{empUName,jdbcType=VARCHAR}
+  </select>
+  <select id="selectOneEmployee" parameterType="map" resultMap="BaseResultMap">
+    select * from employee where emp_name like CONCAT('%${empName}%') and emp_area=#{empArea} and emp_part=#{empPart}
+  </select>
+  <select id="selectByUName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select * from employee where emp_uname = #{empUName}
+  </select>
+  <select id="uNameisExist" parameterType="java.lang.String">
+    select emp_uname from employee where emp_uname=#{empUName}
+  </select>
+</mapper>
