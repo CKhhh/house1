@@ -36,7 +36,8 @@
             <property name="enableSubPackages" value="true" />
         </javaClientGenerator>
         <!-- table指定的每个表的生成策略 -->
-        <table tableName="employee" domainObjectName="Employee"></table>
+        <!--<table tableName="employee" domainObjectName="Employee"></table>-->
+        <table tableName="application" domainObjectName="Application"></table>
 
     </context>
 </generatorConfiguration>

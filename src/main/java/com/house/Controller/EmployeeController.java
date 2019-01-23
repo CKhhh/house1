@@ -19,7 +19,7 @@ import java.util.Random;
  */
 @Controller
 @RequestMapping("/Employee")
-public class EmployeeController {
+public class    EmployeeController {
     @Autowired
     EmployeeImpl employeeImpl;
     @RequestMapping("/insertEmployee.html")
@@ -37,14 +37,12 @@ public class EmployeeController {
         httpServletResponse.setHeader("Content-type", "text/html;charset=UTF-8");
         httpServletResponse.setCharacterEncoding("UTF-8");
         if (!employeeImpl.userIsExist(uName)){
-            System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx1");
             try {
                 httpServletResponse.getWriter().write(0);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }else{
-            System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx2");
             int uuid = new Random().nextInt(89999999)+10000000;
             while (true){
                 if (!employeeImpl.idIsExist(uuid)){
@@ -53,12 +51,7 @@ public class EmployeeController {
                     break;
                 }
             }
-            System.out.println(uuid);
-            System.out.println(empName+"empNameempNameempNameempNameempNameempNameempName");
-
             Employee employee = new Employee(uuid,empName,empPhone,empPart,empJob,empArea,empEntry,empType,uName,password);
-            System.out.println(employee.getEmpName()+"empNameempNameempNameempNameempNameempNameempName");
-
             try {
                 employeeImpl.insertEmployee(employee);
                 System.out.println("yes");
@@ -93,7 +86,7 @@ public class EmployeeController {
         } catch (IOException e) {
             e.printStackTrace();
             try {
-                response.getWriter().write(1);
+                response.getWriter().write(0);
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
@@ -146,5 +139,9 @@ public class EmployeeController {
                 e2.printStackTrace();
             }
         }
+    }
+    @RequestMapping("toEmployee.html")
+    public String toEmployee(){
+        return "xxx";
     }
 }
