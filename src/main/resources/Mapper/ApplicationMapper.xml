@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.house.Dao.ApplicationMapper">
+  <resultMap id="BaseResultMap" type="com.house.Bean.Application">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="application_time" jdbcType="TIMESTAMP" property="applicationTime" />
+    <result column="application_person" jdbcType="VARCHAR" property="applicationPerson" />
+    <result column="application_branch" jdbcType="VARCHAR" property="applicationBranch" />
+    <result column="application_depa" jdbcType="VARCHAR" property="applicationDepa" />
+    <result column="application_job" jdbcType="VARCHAR" property="applicationJob" />
+    <result column="application_pro" jdbcType="VARCHAR" property="applicationPro" />
+    <result column="application_price" jdbcType="DECIMAL" property="applicationPrice" />
+    <result column="application_bankcard" jdbcType="VARCHAR" property="applicationBankcard" />
+    <result column="application_reason" jdbcType="VARCHAR" property="applicationReason" />
+    <result column="application_pic" jdbcType="VARCHAR" property="applicationPic" />
+    <result column="application_status" jdbcType="VARCHAR" property="applicationStatus" />
+    <result column="deal_person" jdbcType="VARCHAR" property="dealPerson" />
+    <result column="deal_time" jdbcType="TIMESTAMP" property="dealTime" />
+    <result column="deal_pic" jdbcType="VARCHAR" property="dealPic" />
+    <result column="deal_note" jdbcType="VARCHAR" property="dealNote" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, application_time, application_person, application_branch, application_depa, application_job, 
+    application_pro, application_price, application_bankcard, application_reason, application_pic, 
+    application_status, deal_person, deal_time, deal_pic, deal_note
+  </sql>
+  <select id="selectByExample" parameterType="com.house.Bean.ApplicationExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from application
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from application
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from application
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.house.Bean.ApplicationExample">
+    delete from application
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.house.Bean.Application">
+    insert into application (id, application_time, application_person, 
+      application_branch, application_depa, application_job, 
+      application_pro, application_price, application_bankcard, 
+      application_reason, application_pic, application_status, 
+      deal_person, deal_time, deal_pic, 
+      deal_note)
+    values (#{id,jdbcType=INTEGER}, #{applicationTime,jdbcType=TIMESTAMP}, #{applicationPerson,jdbcType=VARCHAR}, 
+      #{applicationBranch,jdbcType=VARCHAR}, #{applicationDepa,jdbcType=VARCHAR}, #{applicationJob,jdbcType=VARCHAR}, 
+      #{applicationPro,jdbcType=VARCHAR}, #{applicationPrice,jdbcType=DECIMAL}, #{applicationBankcard,jdbcType=VARCHAR}, 
+      #{applicationReason,jdbcType=VARCHAR}, #{applicationPic,jdbcType=VARCHAR}, #{applicationStatus,jdbcType=VARCHAR}, 
+      #{dealPerson,jdbcType=VARCHAR}, #{dealTime,jdbcType=TIMESTAMP}, #{dealPic,jdbcType=VARCHAR}, 
+      #{dealNote,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.house.Bean.Application">
+    insert into application
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="applicationTime != null">
+        application_time,
+      </if>
+      <if test="applicationPerson != null">
+        application_person,
+      </if>
+      <if test="applicationBranch != null">
+        application_branch,
+      </if>
+      <if test="applicationDepa != null">
+        application_depa,
+      </if>
+      <if test="applicationJob != null">
+        application_job,
+      </if>
+      <if test="applicationPro != null">
+        application_pro,
+      </if>
+      <if test="applicationPrice != null">
+        application_price,
+      </if>
+      <if test="applicationBankcard != null">
+        application_bankcard,
+      </if>
+      <if test="applicationReason != null">
+        application_reason,
+      </if>
+      <if test="applicationPic != null">
+        application_pic,
+      </if>
+      <if test="applicationStatus != null">
+        application_status,
+      </if>
+      <if test="dealPerson != null">
+        deal_person,
+      </if>
+      <if test="dealTime != null">
+        deal_time,
+      </if>
+      <if test="dealPic != null">
+        deal_pic,
+      </if>
+      <if test="dealNote != null">
+        deal_note,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="applicationTime != null">
+        #{applicationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="applicationPerson != null">
+        #{applicationPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="applicationBranch != null">
+        #{applicationBranch,jdbcType=VARCHAR},
+      </if>
+      <if test="applicationDepa != null">
+        #{applicationDepa,jdbcType=VARCHAR},
+      </if>
+      <if test="applicationJob != null">
+        #{applicationJob,jdbcType=VARCHAR},
+      </if>
+      <if test="applicationPro != null">
+        #{applicationPro,jdbcType=VARCHAR},
+      </if>
+      <if test="applicationPrice != null">
+        #{applicationPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="applicationBankcard != null">
+        #{applicationBankcard,jdbcType=VARCHAR},
+      </if>
+      <if test="applicationReason != null">
+        #{applicationReason,jdbcType=VARCHAR},
+      </if>
+      <if test="applicationPic != null">
+        #{applicationPic,jdbcType=VARCHAR},
+      </if>
+      <if test="applicationStatus != null">
+        #{applicationStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="dealPerson != null">
+        #{dealPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="dealTime != null">
+        #{dealTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dealPic != null">
+        #{dealPic,jdbcType=VARCHAR},
+      </if>
+      <if test="dealNote != null">
+        #{dealNote,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.house.Bean.ApplicationExample" resultType="java.lang.Long">
+    select count(*) from application
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update application
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.applicationTime != null">
+        application_time = #{record.applicationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.applicationPerson != null">
+        application_person = #{record.applicationPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="record.applicationBranch != null">
+        application_branch = #{record.applicationBranch,jdbcType=VARCHAR},
+      </if>
+      <if test="record.applicationDepa != null">
+        application_depa = #{record.applicationDepa,jdbcType=VARCHAR},
+      </if>
+      <if test="record.applicationJob != null">
+        application_job = #{record.applicationJob,jdbcType=VARCHAR},
+      </if>
+      <if test="record.applicationPro != null">
+        application_pro = #{record.applicationPro,jdbcType=VARCHAR},
+      </if>
+      <if test="record.applicationPrice != null">
+        application_price = #{record.applicationPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.applicationBankcard != null">
+        application_bankcard = #{record.applicationBankcard,jdbcType=VARCHAR},
+      </if>
+      <if test="record.applicationReason != null">
+        application_reason = #{record.applicationReason,jdbcType=VARCHAR},
+      </if>
+      <if test="record.applicationPic != null">
+        application_pic = #{record.applicationPic,jdbcType=VARCHAR},
+      </if>
+      <if test="record.applicationStatus != null">
+        application_status = #{record.applicationStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dealPerson != null">
+        deal_person = #{record.dealPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dealTime != null">
+        deal_time = #{record.dealTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.dealPic != null">
+        deal_pic = #{record.dealPic,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dealNote != null">
+        deal_note = #{record.dealNote,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update application
+    set id = #{record.id,jdbcType=INTEGER},
+      application_time = #{record.applicationTime,jdbcType=TIMESTAMP},
+      application_person = #{record.applicationPerson,jdbcType=VARCHAR},
+      application_branch = #{record.applicationBranch,jdbcType=VARCHAR},
+      application_depa = #{record.applicationDepa,jdbcType=VARCHAR},
+      application_job = #{record.applicationJob,jdbcType=VARCHAR},
+      application_pro = #{record.applicationPro,jdbcType=VARCHAR},
+      application_price = #{record.applicationPrice,jdbcType=DECIMAL},
+      application_bankcard = #{record.applicationBankcard,jdbcType=VARCHAR},
+      application_reason = #{record.applicationReason,jdbcType=VARCHAR},
+      application_pic = #{record.applicationPic,jdbcType=VARCHAR},
+      application_status = #{record.applicationStatus,jdbcType=VARCHAR},
+      deal_person = #{record.dealPerson,jdbcType=VARCHAR},
+      deal_time = #{record.dealTime,jdbcType=TIMESTAMP},
+      deal_pic = #{record.dealPic,jdbcType=VARCHAR},
+      deal_note = #{record.dealNote,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.house.Bean.Application">
+    update application
+    <set>
+      <if test="applicationTime != null">
+        application_time = #{applicationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="applicationPerson != null">
+        application_person = #{applicationPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="applicationBranch != null">
+        application_branch = #{applicationBranch,jdbcType=VARCHAR},
+      </if>
+      <if test="applicationDepa != null">
+        application_depa = #{applicationDepa,jdbcType=VARCHAR},
+      </if>
+      <if test="applicationJob != null">
+        application_job = #{applicationJob,jdbcType=VARCHAR},
+      </if>
+      <if test="applicationPro != null">
+        application_pro = #{applicationPro,jdbcType=VARCHAR},
+      </if>
+      <if test="applicationPrice != null">
+        application_price = #{applicationPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="applicationBankcard != null">
+        application_bankcard = #{applicationBankcard,jdbcType=VARCHAR},
+      </if>
+      <if test="applicationReason != null">
+        application_reason = #{applicationReason,jdbcType=VARCHAR},
+      </if>
+      <if test="applicationPic != null">
+        application_pic = #{applicationPic,jdbcType=VARCHAR},
+      </if>
+      <if test="applicationStatus != null">
+        application_status = #{applicationStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="dealPerson != null">
+        deal_person = #{dealPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="dealTime != null">
+        deal_time = #{dealTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dealPic != null">
+        deal_pic = #{dealPic,jdbcType=VARCHAR},
+      </if>
+      <if test="dealNote != null">
+        deal_note = #{dealNote,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.house.Bean.Application">
+    update application
+    set application_time = #{applicationTime,jdbcType=TIMESTAMP},
+      application_person = #{applicationPerson,jdbcType=VARCHAR},
+      application_branch = #{applicationBranch,jdbcType=VARCHAR},
+      application_depa = #{applicationDepa,jdbcType=VARCHAR},
+      application_job = #{applicationJob,jdbcType=VARCHAR},
+      application_pro = #{applicationPro,jdbcType=VARCHAR},
+      application_price = #{applicationPrice,jdbcType=DECIMAL},
+      application_bankcard = #{applicationBankcard,jdbcType=VARCHAR},
+      application_reason = #{applicationReason,jdbcType=VARCHAR},
+      application_pic = #{applicationPic,jdbcType=VARCHAR},
+      application_status = #{applicationStatus,jdbcType=VARCHAR},
+      deal_person = #{dealPerson,jdbcType=VARCHAR},
+      deal_time = #{dealTime,jdbcType=TIMESTAMP},
+      deal_pic = #{dealPic,jdbcType=VARCHAR},
+      deal_note = #{dealNote,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectOwnApplication" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select * from application where application_person_id = #{applicationPersonId,jdbcType=INTEGER}
+  </select>
+  <select id="adminSelect" parameterType="java.lang.String" resultMap="com.house.Bean.Application">
+    select * from application where application_status = #{applicationStatus,jdbcType=VARCHAR}
+  </select>
+  <select id="masterSelect" parameterType="map" resultMap="com.house.Bean.Application">
+    select * from application where application_status = #{applicationStatus,jdbcType=VARCHAR} and application_branch = #{applicationBranch,jdbcType=VARCHAR}
+  </select>
+  <select id="managerSelect" parameterType="map" resultMap="com.house.Bean.Application">
+    select * from application where application_status = #{applicationStatus,jdbcType=VARCHAR} and application_branch = #{applicationBranch,jdbcType=VARCHAR} and
+    application_depa = #{applicationDepa,jdbcType=VARCHAR}
+  </select>
+  <update id="dealApplication" parameterType="map">
+    update application set application_status=#{applicationStatus,jdbcType=VARCHAR} where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="idIsExist" parameterType="java.lang.String" resultMap="java.lang.Integer">
+    select id from application where id=#{id,jdbcType=INTEGER}
+  </select>
+</mapper>
