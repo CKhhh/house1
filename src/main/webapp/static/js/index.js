@@ -1,10 +1,13 @@
-function insertImgs() {
+function cclick() {
     $("#insertImgs").click();
+
+}
+function insertImgs() {
     var formData = new FormData();
-    var header_file = $("#insertImgs").get(0).files[0]
+    var header_file = $("#insertImgs")[0].files[0]
     var phone = "18712341234"
     formData.append("applicationPic", header_file)
-    formData.append("applicationTime", 1998-1-1)
+    formData.append("applicationTime", 2008-01-12)
     formData.append("applicationPerson",1)
     formData.append("applicationBranch",1)
     formData.append("applicationDepa",1)
@@ -15,7 +18,6 @@ function insertImgs() {
     formData.append("applicationReason",1)
     formData.append("applicationStatus",1)
     formData.append("applicationPersonId",1)
-
     $.ajax({
         url: "/Application/insertApplication.html",
         type: "POST",
@@ -29,8 +31,8 @@ function insertImgs() {
             alert("uuu")
         },
         error: function () {
+            console.log(formData.get("applicationPic"))
             alert("motherFucker")
         }
-
     })
 }

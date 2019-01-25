@@ -386,20 +386,20 @@
   <select id="selectOwnApplication" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select * from application where application_person_id = #{applicationPersonId,jdbcType=INTEGER}
   </select>
-  <select id="adminSelect" parameterType="java.lang.String" resultMap="com.house.Bean.Application">
+  <select id="adminSelect" parameterType="java.lang.String" resultMap="BaseResultMap">
     select * from application where application_status = #{applicationStatus,jdbcType=VARCHAR}
   </select>
-  <select id="masterSelect" parameterType="map" resultMap="com.house.Bean.Application">
+  <select id="masterSelect" parameterType="map" resultMap="BaseResultMap">
     select * from application where application_status = #{applicationStatus,jdbcType=VARCHAR} and application_branch = #{applicationBranch,jdbcType=VARCHAR}
   </select>
-  <select id="managerSelect" parameterType="map" resultMap="com.house.Bean.Application">
+  <select id="managerSelect" parameterType="map" resultMap="BaseResultMap">
     select * from application where application_status = #{applicationStatus,jdbcType=VARCHAR} and application_branch = #{applicationBranch,jdbcType=VARCHAR} and
     application_depa = #{applicationDepa,jdbcType=VARCHAR}
   </select>
   <update id="dealApplication" parameterType="map">
     update application set application_status=#{applicationStatus,jdbcType=VARCHAR} where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="idIsExist" parameterType="java.lang.String" resultMap="java.lang.Integer">
-    select id from application where id=#{id,jdbcType=INTEGER}
+  <select id="idIsExist" parameterType="java.lang.Integer" resultMap="BaseResultMap" >
+    select * from application where id=#{id,jdbcType=INTEGER}
   </select>
 </mapper>

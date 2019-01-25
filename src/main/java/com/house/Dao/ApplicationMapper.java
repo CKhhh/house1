@@ -37,5 +37,5 @@ public interface ApplicationMapper {
     List<Application> managerSelect(@Param("applicationStatus")String applicationStatus,@Param("applicationBranch")String applicationBranch,@Param("applicationDepa")String applicationDepa);
 
     void dealApplication(@Param("applicationStatus")String applicationStatus,@Param("id") int id);
-    int idIsExist(int id);
+    Application idIsExist(int id);
 }

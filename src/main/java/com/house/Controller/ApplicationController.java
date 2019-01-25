@@ -43,9 +43,9 @@ public class ApplicationController {
                                   @RequestParam(value = "applicationReason") String applicationReason,
                                   @RequestParam(value = "applicationPic", required = false) MultipartFile[] applicationPic,
                                   @RequestParam(value = "applicationStatus") String applicationStatus,
-
                                   @RequestParam(value = "applicationPersonId") String applicationPersonId,
                                   HttpServletResponse response, HttpServletRequest request) {
+        System.out.println(applicationPic.length);
         int uuid = new Random().nextInt(89999999) + 10000000;
         while (true) {
             if (!applicationimpl.idIsExist(uuid)) {
@@ -56,6 +56,7 @@ public class ApplicationController {
         }
         String sumUrl = null;
         String sumUrl2 = null;
+        System.out.println(1);
         for (MultipartFile mf : applicationPic) {
             if (!mf.isEmpty()) {
                 // 使用UUID给图片重命名，并去掉四个“-”
@@ -64,28 +65,32 @@ public class ApplicationController {
                 String ext = FilenameUtils.getExtension(mf
                         .getOriginalFilename());
                 // 设置图片上传路径
+                System.out.println(3);
                 String pathdd = request.getContextPath();
-                String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + pathdd + "/static/imgs/applicationImgs";
+                String url = request.getServerName() + ":" + request.getServerPort() + pathdd + "/static/imgs/applicationImgs";
                 // 以绝对路径保存重名命后的图片
                 String urlAll = url + "/" + name + "." + ext;
-                System.out.println(urlAll);
                 try {
                     mf.transferTo(new File(urlAll));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                System.out.println(urlAll);
                 sumUrl += urlAll + ";";
                 // 把图片存储路径保存到数据库
             }
         }
+        System.out.println(2);
         BigDecimal b = new BigDecimal(applicationPrice);
-        java.text.SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd ");
+        java.text.SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date applicationTimer = null;
         try {
             applicationTimer = formatter.parse(applicationTime);
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        System.out.println(applicationTimer);
+        System.out.println(sumUrl);
         Application application = new Application(uuid, applicationTimer, applicationPerson, applicationBranch, applicationDepa, applicationJob,
                 applicationPro, b, applicationBankCard, applicationReason, sumUrl, applicationStatus,
                 null, null, sumUrl2, null, Integer.parseInt(applicationPersonId));

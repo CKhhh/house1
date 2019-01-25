@@ -16,14 +16,15 @@
     <script src="https://cdn.bootcss.com/bootstrap-select/1.13.4/js/bootstrap-select.min.js"></script>
     <script src="https://cdn.bootcss.com/moment.js/2.23.0/moment-with-locales.min.js"></script>
     <script src="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
-    <script type="text/javascript "src="../../static/js/index.js"></script>
+    <script type="text/javascript" src="../../static/js/index.js"></script>
 	<link rel="stylesheet" href="../../static/css/style.css">
 
 </head>
 <body style="background: rgba(222,222,222,.3)">
-
+	
 	<div id="wrapper">
         <div class="overlay"></div>
+    
         <!-- Sidebar -->
         <nav class="navbar navbar-inverse navbar-fixed-top" id="sidebar-wrapper" role="navigation">
             <ul class="nav sidebar-nav">
@@ -459,7 +460,7 @@
                                     <td>雨花区</td>
                                     <td>一部</td>
                                     <td>马潇峰</td>
-                                    <td><a href="####">修改</a></td>
+                                    <td><button type="button" class="btn btn-primary">处理</button></td>
                                     <td></td>
                                 </tr>
                                 <tr>
@@ -468,14 +469,65 @@
                                     <td>雨花区</td>
                                     <td>二部</td>
                                     <td>陈开</td>
-                                    <td><a href="####">修改</a></td>
+                                    <td><button type="button" class="btn btn-primary">处理</button></td>
                                     <td></td>
                                 </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
-                    <div class="col-lg-8 col-lg-offset-2" style="">
+                    <div class="col-lg-8 col-lg-offset-2" style="display: none">
+                        <h3 style="text-align: center">已处理事项</h3>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="input-group">
+                                    <input type="text" class="form-control">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" type="button">搜索</button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-responsive" style="margin-top: 30px;text-align: center">
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>房源编号</th>
+                                    <th>房间</th>
+                                    <th>房屋地址</th>
+                                    <th>待办事项</th>
+                                    <th>事项时间</th>
+                                    <th>处理人</th>
+                                    <th>处理时间</th>
+                                    <th>备注</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>店长</td>
+                                    <td>雨花区</td>
+                                    <td>一部</td>
+                                    <td>马潇峰</td>
+                                    <td>马潇峰</td>
+                                    <td>2019-1-16</td>
+                                    <td>没有</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>店长</td>
+                                    <td>雨花区</td>
+                                    <td>二部</td>
+                                    <td>陈开</td>
+                                    <td>马潇峰</td>
+                                    <td>2019-1-16</td>
+                                    <td>没有</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-lg-8 col-lg-offset-2" style="display: none">
                         <h3 style="text-align: center">我的审批</h3>
                         <div class="row">
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".m3">发起新审批</button>
@@ -530,7 +582,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-8 col-lg-offset-2" style="">
+                    <div class="col-lg-8 col-lg-offset-2" style="display: none">
                         <h3 style="text-align: center">待处理审批</h3>
                         <div class="table-responsive" style="margin-top: 30px;text-align: center">
                             <table class="table table-bordered">
@@ -574,7 +626,7 @@
                             </table>
                         </div>
                     </div>
-                    <div class="col-lg-8 col-lg-offset-2" style="">
+                    <div class="col-lg-8 col-lg-offset-2" style="display: none">
                         <h3 style="text-align: center">已处理审批</h3>
                         <div class="row">
                             <div class="col-md-3" style="margin-left: -15px">
@@ -633,6 +685,340 @@
                                         <td>查看</td>
                                         <td>马潇峰</td>
                                         <td><button type="button" class="btn btn-primary"  data-toggle="modal" data-target=".m4">查看</button></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-8 col-lg-offset-2" style="display: none">
+                        <h3 style="text-align: center">报修管理</h3>
+                        <div class="row" style="margin-top: 40px">
+                            <div class="col-md-2">
+                                <button type="button" class="btn btn-primary">未处理报修</button>
+                            </div>
+                            <div class="col-md-2">
+                                <button type="button" class="btn btn-primary">已处理报修</button>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="input-group">
+                                    <input type="text" class="form-control">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" type="button">搜索</button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-responsive" style="margin-top: 30px;text-align: center">
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th>租客姓名</th>
+                                <th>联系电话</th>
+                                <th>报修时间</th>
+                                <th>房屋地址</th>
+                                <th>报修物品</th>
+                                <th>故障描述</th>
+                                <th>查看/处理</th>
+                                <th>处理人</th>
+                                <th>处理时间</th>
+                                <th>结果备注</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>店长</td>
+                                <td>雨花区</td>
+                                <td>一部</td>
+                                <td>马潇峰</td>
+                                <td>没有</td>
+                                <td><button type="button" class="btn btn-primary">查看</button></td>
+                                <td>马潇峰</td>
+                                <td>2019-1-16</td>
+                                <td>没有</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>店长</td>
+                                <td>雨花区</td>
+                                <td>二部</td>
+                                <td>陈开</td>
+                                <td>没有</td>
+                                <td><button type="button" class="btn btn-primary">查看</button></td>
+                                <td>马潇峰</td>
+                                <td>2019-1-16</td>
+                                <td>没有</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    </div>
+                    <div class="col-lg-8 col-lg-offset-2" style="display: none">
+                        <h3 style="text-align: center">在线委托</h3>
+                        <div class="row" style="margin-top: 40px">
+                            <div class="col-md-2">
+                                <button type="button" class="btn btn-primary">未处理委托</button>
+                            </div>
+                            <div class="col-md-2">
+                                <button type="button" class="btn btn-primary">已处理委托</button>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="input-group">
+                                    <input type="text" class="form-control">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" type="button">搜索</button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-responsive" style="margin-top: 30px;text-align: center">
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>业主姓名</th>
+                                    <th>联系电话</th>
+                                    <th>具体房型</th>
+                                    <th>房屋地址</th>
+                                    <th>房屋面积</th>
+                                    <th>可租年限</th>
+                                    <th>查看/处理</th>
+                                    <th>处理人</th>
+                                    <th>处理时间</th>
+                                    <th>结果备注</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>店长</td>
+                                    <td>雨花区</td>
+                                    <td>一部</td>
+                                    <td>马潇峰</td>
+                                    <td>没有</td>
+                                    <td><button type="button" class="btn btn-primary">查看</button></td>
+                                    <td>马潇峰</td>
+                                    <td>2019-1-16</td>
+                                    <td>没有</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>店长</td>
+                                    <td>雨花区</td>
+                                    <td>二部</td>
+                                    <td>陈开</td>
+                                    <td>没有</td>
+                                    <td><button type="button" class="btn btn-primary">查看</button></td>
+                                    <td>马潇峰</td>
+                                    <td>2019-1-16</td>
+                                    <td>没有</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-lg-8 col-lg-offset-2" style="display: none">
+                        <h3 style="text-align: center">客户投诉</h3>
+                        <div class="row" style="margin-top: 40px">
+                            <div class="col-md-2">
+                                <button type="button" class="btn btn-primary">未处理投诉</button>
+                            </div>
+                            <div class="col-md-2">
+                                <button type="button" class="btn btn-primary">已处理投诉</button>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="input-group">
+                                    <input type="text" class="form-control">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" type="button">搜索</button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-responsive" style="margin-top: 30px;text-align: center">
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>租客姓名</th>
+                                    <th>联系电话</th>
+                                    <th>投诉时间</th>
+                                    <th>房屋地址</th>
+                                    <th>投诉内容</th>
+                                    <th>查看/处理</th>
+                                    <th>处理人</th>
+                                    <th>处理时间</th>
+                                    <th>结果备注</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>店长</td>
+                                    <td>雨花区</td>
+                                    <td>一部</td>
+                                    <td>没有</td>
+                                    <td><button type="button" class="btn btn-primary">查看</button></td>
+                                    <td>马潇峰</td>
+                                    <td>2019-1-16</td>
+                                    <td>没有</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>店长</td>
+                                    <td>雨花区</td>
+                                    <td>二部</td>
+                                    <td>没有</td>
+                                    <td><button type="button" class="btn btn-primary">查看</button></td>
+                                    <td>马潇峰</td>
+                                    <td>2019-1-16</td>
+                                    <td>没有</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-lg-8 col-lg-offset-2" style="display: none">
+                        <h3 style="text-align: center">预约看房</h3>
+                        <div class="row" style="margin-top: 40px">
+                            <div class="col-md-2">
+                                <button type="button" class="btn btn-primary">未处理预约</button>
+                            </div>
+                            <div class="col-md-2">
+                                <button type="button" class="btn btn-primary">已处理预约</button>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="input-group">
+                                    <input type="text" class="form-control">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" type="button">搜索</button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-responsive" style="margin-top: 30px;text-align: center">
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>客户姓名</th>
+                                    <th>联系电话</th>
+                                    <th>看房时间</th>
+                                    <th>看房区域</th>
+                                    <th>备注信息</th>
+                                    <th>查看/处理</th>
+                                    <th>处理人</th>
+                                    <th>处理时间</th>
+                                    <th>结果备注</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>店长</td>
+                                    <td>雨花区</td>
+                                    <td>一部</td>
+                                    <td>没有</td>
+                                    <td><button type="button" class="btn btn-primary">查看</button></td>
+                                    <td>马潇峰</td>
+                                    <td>2019-1-16</td>
+                                    <td>没有</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>店长</td>
+                                    <td>雨花区</td>
+                                    <td>二部</td>
+                                    <td>没有</td>
+                                    <td><button type="button" class="btn btn-primary">查看</button></td>
+                                    <td>马潇峰</td>
+                                    <td>2019-1-16</td>
+                                    <td>没有</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-lg-8 col-lg-offset-2" style="">
+                        <h3 style="text-align: center">财务管理</h3>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <span class="input-group input-group-sm" style="margin-top: 5px;">
+                                    <span class="input-group-addon">分店：</span>
+                                    <select class="selectpicker">
+                                        <option value="1">雨花区</option>
+                                        <option value="2">海淀区</option>
+                                        <option value="3">金牛区</option>
+                                        <option value="4">罗湖区</option>
+                                    </select>
+                                </span>
+
+                            </div>
+                            <div class="col-md-4">
+                                <span class="input-group input-group-sm" style="margin-top: 5px;">
+                                    <span class="input-group-addon">部门：</span>
+                                    <select class="selectpicker">
+                                        <option value="1">一部</option>
+                                        <option value="2">二部</option>
+                                        <option value="3">三部</option>
+                                        <option value="4">四部</option>
+                                        <option value="4">五部</option>
+                                    </select>
+                                </span>
+
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>开始：</label>
+                                    <!--指定 date标记-->
+                                    <div class='input-group date' id='datetimepicker7'>
+                                        <input type='text' class="form-control" />
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>截止：</label>
+                                    <!--指定 date标记-->
+                                    <div class='input-group date' id='datetimepicker8'>
+                                        <input type='text' class="form-control" />
+                                        <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <button type="button" class="btn btn-primary" style="width: 100px;margin-top: 25px">统计</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="table-responsive" style="margin-top: 30px;text-align: center">
+                                <table class="table table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th>房源编号</th>
+                                        <th>总收入</th>
+                                        <th>总支出</th>
+                                        <th>结余</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>店长</td>
+                                        <td>雨花区</td>
+                                        <td>一部</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>店长</td>
+                                        <td>雨花区</td>
+                                        <td>二部</td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -793,7 +1179,7 @@
         <div class="modal fade bs-example-modal-sm m3" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
             <div class="modal-dialog modal-sm" role="document">
                 <div class="modal-content" style="padding-left: 20px">
-                    <button type="button" class="close"  data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h3 class="modal-header" style="text-align: center">发起新审批</h3>
                     <div class="modal-body">
                         <div class="form-group">
@@ -858,14 +1244,7 @@
                         </span>
                         <span class="input-group input-group-sm" style="margin-top: 5px;">
                             <span class="input-group-addon">相关图片：</span>
-                            <%--<span id="s" class="btn btn-primary form-control" aria-describedby="sizing-addon3" style="width: 100px">--%>
-                                <%--<input id="insertImgs" type="file" />--%>
-                                    <%--&lt;%&ndash;<img src="../../static/imgs/timg%20(1).jpg" alt="" id="userHead" style="width: 100px";>&ndash;%&gt;--%>
-                            <%--</span>--%>
-                            <span class="charactor" style="width: 50px">
-                        <input id="insertImgs" type="file"  style="display: none" multiple/>
-                            <img src="../../static/imgs/System/insertImg.jpg" alt="" style="width: 50px" id="insertImg" class="img" onclick="insertImgs()">
-                        </span>
+                            <button type="button" class="btn btn-primary form-control" aria-describedby="sizing-addon3" style="width: 100px;">上传图片</button>
                         </span>
                     </div>
                     <div class="modal-footer">
@@ -1058,6 +1437,14 @@
                 locale: moment.locale('zh-cn')
             });
             $('#datetimepicker6').datetimepicker({
+                format: 'YYYY-MM-DD',
+                locale: moment.locale('zh-cn')
+            });
+            $('#datetimepicker7').datetimepicker({
+                format: 'YYYY-MM-DD',
+                locale: moment.locale('zh-cn')
+            });
+            $('#datetimepicker8').datetimepicker({
                 format: 'YYYY-MM-DD',
                 locale: moment.locale('zh-cn')
             });

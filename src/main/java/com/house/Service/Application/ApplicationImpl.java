@@ -43,7 +43,7 @@ public class ApplicationImpl implements ApplicationService {
 
     @Override
     public boolean idIsExist(int id) {
-        if (applicationMapper.idIsExist(id)+""!=null){
+        if (applicationMapper.idIsExist(id)!=null){
             return false;
         }
         return true;
