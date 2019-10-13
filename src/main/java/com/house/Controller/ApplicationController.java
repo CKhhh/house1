@@ -1,13 +1,18 @@
 package com.house.Controller;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.house.Bean.Application;
+import com.house.Bean.Repair;
 import com.house.Service.Application.ApplicationImpl;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +23,7 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
@@ -45,7 +51,6 @@ public class ApplicationController {
                                   @RequestParam(value = "applicationStatus") String applicationStatus,
                                   @RequestParam(value = "applicationPersonId") String applicationPersonId,
                                   HttpServletResponse response, HttpServletRequest request) {
-        System.out.println(applicationPic.length);
         int uuid = new Random().nextInt(89999999) + 10000000;
         while (true) {
             if (!applicationimpl.idIsExist(uuid)) {
@@ -54,20 +59,18 @@ public class ApplicationController {
                 break;
             }
         }
-        String sumUrl = null;
-        String sumUrl2 = null;
-        System.out.println(1);
+        String sumUrl = "";
+        String sumUrl2 = "";
+        System.out.println("衬衫的价格："+applicationPic.length);
         for (MultipartFile mf : applicationPic) {
             if (!mf.isEmpty()) {
                 // 使用UUID给图片重命名，并去掉四个“-”
                 String name = UUID.randomUUID().toString().replaceAll("-", "");
                 // 获取文件的扩展名
-                String ext = FilenameUtils.getExtension(mf
-                        .getOriginalFilename());
+                String ext = mf.getOriginalFilename().substring(mf.getOriginalFilename().lastIndexOf(".") + 1);
                 // 设置图片上传路径
-                System.out.println(3);
                 String pathdd = request.getContextPath();
-                String url = request.getServerName() + ":" + request.getServerPort() + pathdd + "/static/imgs/applicationImgs";
+                String url = request.getSession().getServletContext().getRealPath("/static/imgs/applicationImgs");
                 // 以绝对路径保存重名命后的图片
                 String urlAll = url + "/" + name + "." + ext;
                 try {
@@ -75,14 +78,14 @@ public class ApplicationController {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                System.out.println(urlAll);
-                sumUrl += urlAll + ";";
+                String url2 = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+
+                        request.getContextPath()+"/static/imgs/applicationImgs"+ "/" + name + "." + ext;
+                sumUrl += url2 + ";";
                 // 把图片存储路径保存到数据库
             }
         }
-        System.out.println(2);
         BigDecimal b = new BigDecimal(applicationPrice);
-        java.text.SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date applicationTimer = null;
         try {
             applicationTimer = formatter.parse(applicationTime);
@@ -94,15 +97,22 @@ public class ApplicationController {
         Application application = new Application(uuid, applicationTimer, applicationPerson, applicationBranch, applicationDepa, applicationJob,
                 applicationPro, b, applicationBankCard, applicationReason, sumUrl, applicationStatus,
                 null, null, sumUrl2, null, Integer.parseInt(applicationPersonId));
+        System.out.println("xxxxxxxxxxxxxxxxxx"+Integer.parseInt(applicationPersonId));
         applicationimpl.insertApplication(application);
     }
 
     @RequestMapping("selectOwnApplication.html")
-    public void selectOwnApplication(@RequestParam(value = "personId") int personId, HttpServletResponse response) {
-        Application application = applicationimpl.selectOwnApplication(personId);
-        Gson gson = new Gson();
-        String json = gson.toJson(application);
-        response.setHeader("Content-Type", "text/html.charset=utf-8");
+    @ResponseBody
+    public void selectOwnApplication(@RequestParam(value = "personId") int personId,
+                                     @RequestParam(value = "pn") int pn,
+                                     HttpServletResponse response) {
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+        int pagesize=20;
+        PageHelper.startPage(pn,pagesize);
+        List<Application> application = applicationimpl.selectOwnApplication(personId);
+        PageInfo<Application> pageInfo = new PageInfo<Application>(application);
+        String json = gson.toJson(pageInfo);
+        response.setHeader("Content-Type", "text/htm,charset=utf-8");
         response.setCharacterEncoding("UTF-8");
         try {
             response.getWriter().write(json);
@@ -116,18 +126,26 @@ public class ApplicationController {
                          @RequestParam(value = "personId") String personId,
                          @RequestParam(value = "personArea") String personArea,
                          @RequestParam(value = "personPart") String personPart,
+                         @RequestParam(value = "pn") int pn,
                          HttpServletResponse response
     ) {
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+        int pagesize=20;
+        PageHelper.startPage(pn,pagesize);
         String json = null;
         response.setHeader("Content-Type", "text/html,charset=UTF-8");
         response.setCharacterEncoding("UTF-8");
         if (power == 4) {
-            json = gson.toJson(applicationimpl.adminApplication("1"));
+            PageInfo<Application> pageInfo = new PageInfo<Application>(applicationimpl.adminApplication("1"));
+            json = gson.toJson(pageInfo);
         } else if (power == 3) {
-            json = gson.toJson(applicationimpl.masterApplication("1", personArea));
+            PageInfo<Application> pageInfo = new PageInfo<Application>(applicationimpl.masterApplication("1", personArea));
+
+            json = gson.toJson(pageInfo);
         } else if (power == 2) {
-            json = gson.toJson(applicationimpl.managerApplication("1", personArea, personPart));
+            PageInfo<Application> pageInfo = new PageInfo<Application>(applicationimpl.managerApplication("1", personArea, personPart));
+
+            json = gson.toJson(pageInfo);
         } else {
             json = "您没有权限";
         }
@@ -143,18 +161,25 @@ public class ApplicationController {
                          @RequestParam(value = "personId") String personId,
                          @RequestParam(value = "personArea") String personArea,
                          @RequestParam(value = "personPart") String personPart,
+                         @RequestParam(value = "pn") int pn,
                          HttpServletResponse response
     ) {
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+        int pagesize=20;
+        PageHelper.startPage(pn,pagesize);
         String json = null;
         response.setHeader("Content-Type", "text/html,charset=UTF-8");
         response.setCharacterEncoding("UTF-8");
         if (power == 4) {
-            json = gson.toJson(applicationimpl.adminApplication("2")) + gson.toJson(applicationimpl.adminApplication("3"));
+            PageInfo<Application> pageInfo = new PageInfo<Application>(applicationimpl.adminApplication("2"));
+            json = gson.toJson(pageInfo) ;
         } else if (power == 3) {
-            json = gson.toJson(applicationimpl.masterApplication("2", personArea)) + gson.toJson(applicationimpl.masterApplication("3", personArea));
+            PageInfo<Application> pageInfo = new PageInfo<Application>(applicationimpl.masterApplication("2", personArea));
+
+            json = gson.toJson(pageInfo);
         } else if (power == 2) {
-            json = gson.toJson(applicationimpl.managerApplication("2", personArea, personPart)) + gson.toJson(applicationimpl.managerApplication("3", personArea, personPart));
+            PageInfo<Application> pageInfo = new PageInfo<Application>(applicationimpl.managerApplication("2", personArea, personPart));
+            json = gson.toJson(pageInfo);
         } else {
             json = "您没有权限";
         }
@@ -174,30 +199,33 @@ public class ApplicationController {
                                 @RequestParam(value = "dealNote") String dealNote,
                                 @RequestParam(value = "applicationPersonId") int applicationPersonId,
                                 HttpServletResponse response, HttpServletRequest request) {
-        String sumUrl2 = null;
-        for (MultipartFile mf2 : dealPic) {
-            if (!mf2.isEmpty()) {
+        String sumUrl2 = "";
+        if (dealPic!=null){
+        for (MultipartFile mf : dealPic) {
+            if (!mf.isEmpty()) {
                 // 使用UUID给图片重命名，并去掉四个“-”
-                String name2 = UUID.randomUUID().toString().replaceAll("-", "");
+                String name = UUID.randomUUID().toString().replaceAll("-", "");
                 // 获取文件的扩展名
-                String ext2 = FilenameUtils.getExtension(mf2
-                        .getOriginalFilename());
+                String ext = mf.getOriginalFilename().substring(mf.getOriginalFilename().lastIndexOf(".") + 1);
                 // 设置图片上传路径
-                String pathdd2 = request.getContextPath();
-                String url2 = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + pathdd2 + "/static/imgs/applicationImgs";
+                String pathdd = request.getContextPath();
+                String url = request.getSession().getServletContext().getRealPath("/static/imgs/applicationImgs");
                 // 以绝对路径保存重名命后的图片
-                String urlAll2 = url2 + "/" + name2 + "." + ext2;
-                System.out.println(urlAll2);
+                String urlAll = url + "/" + name + "." + ext;
                 try {
-                    mf2.transferTo(new File(urlAll2));
+                    mf.transferTo(new File(urlAll));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                sumUrl2 += urlAll2 + ";";
+                String url2 = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+
+                        request.getContextPath()+"/static/imgs/applicationImgs"+ "/" + name + "." + ext;
+                sumUrl2 += url2 + ";";
                 // 把图片存储路径保存到数据库
             }
+        }}else {
+            sumUrl2=null;
         }
-        java.text.SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd ");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date dealTimer = null;
         try {
             dealTimer = formatter.parse(dealTime);
@@ -206,6 +234,23 @@ public class ApplicationController {
         }
         Application application = new Application(applicationId, null, null, null,
                 null, null, null, null, null,
-                null, null, null, dealPerson, dealTimer, sumUrl2, dealNote, applicationPersonId);
+                null, null, applicationstatus, dealPerson, dealTimer, sumUrl2, dealNote, applicationPersonId);
+        applicationimpl.dealApplication(application);
+    }
+    @RequestMapping("selectBlurry")
+    public void selectBlurry(@RequestParam("blurry")String blurry,
+                             @RequestParam("pn") int pn, HttpServletResponse response){
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+        int pagesize=20;
+        PageHelper.startPage(pn,pagesize);
+        PageInfo<Application>pageInfo = new PageInfo<Application>(applicationimpl.selectBlurry(blurry));
+        String json = gson.toJson(pageInfo);
+        response.setHeader("Content-Type","text/html,charset=utf-8");
+        response.setCharacterEncoding("UTF-8");
+        try {
+            response.getWriter().write(json);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

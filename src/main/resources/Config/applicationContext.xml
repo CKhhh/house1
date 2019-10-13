@@ -71,7 +71,7 @@
         </tx:attributes>
     </tx:advice>
     <aop:config>
-        <aop:pointcut id="serviceMethod" expression="execution(* com.house..service.*Impl.*(..))"/>
+        <aop:pointcut id="serviceMethod" expression="execution(* com.house..Service.*Impl.*(..))"/>
         <aop:advisor advice-ref="txAdvice" pointcut-ref="serviceMethod"/>
     </aop:config>
 </beans>

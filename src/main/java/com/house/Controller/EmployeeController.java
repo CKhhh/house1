@@ -1,7 +1,12 @@
 package com.house.Controller;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.house.Bean.Employee;
+import com.house.Bean.Repair;
+import com.house.Bean.Reservation;
 import com.house.Service.Employee.EmployeeImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,6 +30,7 @@ public class    EmployeeController {
     @RequestMapping("/insertEmployee.html")
     public void insertEmployee (@RequestParam(value = "empName")String empName,
                                  @RequestParam(value = "empPhone")String empPhone,
+                                @RequestParam(value = "empBranch")String empBranch,
                                 @RequestParam (value = "empPart")String empPart,
                                  @RequestParam(value = "empJob")String empJob,
                                 @RequestParam(value = "empArea")String empArea,
@@ -36,9 +42,11 @@ public class    EmployeeController {
                                 ){
         httpServletResponse.setHeader("Content-type", "text/html;charset=UTF-8");
         httpServletResponse.setCharacterEncoding("UTF-8");
+        Gson gson = new Gson();
+        String json = gson.toJson(0);
         if (!employeeImpl.userIsExist(uName)){
             try {
-                httpServletResponse.getWriter().write(0);
+                httpServletResponse.getWriter().write(json);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -51,11 +59,11 @@ public class    EmployeeController {
                     break;
                 }
             }
-            Employee employee = new Employee(uuid,empName,empPhone,empPart,empJob,empArea,empEntry,empType,uName,password);
+            Employee employee = new Employee(uuid,empName,empPhone,empBranch,empPart,empJob,empArea,empEntry,empType,uName,password);
             try {
                 employeeImpl.insertEmployee(employee);
                 System.out.println("yes");
-                httpServletResponse.getWriter().write(1);
+                httpServletResponse.getWriter().write("{uuid:"+uuid+"}");
             }catch (Exception e){
                 try {
                     httpServletResponse.getWriter().write(0);
@@ -68,16 +76,22 @@ public class    EmployeeController {
     @RequestMapping("selectEmployee.html")
     public void selectEmployee(@RequestParam(value = "empType") int power,
                                          @RequestParam(value="empArea") String empArea,
-                                        @RequestParam(value = "empPart") String empPart
+                                        @RequestParam(value = "empPart") String empPart,
+            @RequestParam(value = "pn") int pn
             ,HttpServletResponse response){
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+        int pagesize=20;
+        PageHelper.startPage(pn,pagesize);
         String m = null;
         if (power==4){
-          m = gson.toJson(employeeImpl.admin());
+            PageInfo<Employee> pageInfo = new PageInfo<Employee>(employeeImpl.admin());
+          m = gson.toJson(pageInfo);
         }else if(power==3){
-          m = gson.toJson(employeeImpl.master(power,empArea));
+            PageInfo<Employee> pageInfo = new PageInfo<Employee>(employeeImpl.master(power,empArea));
+            m = gson.toJson(pageInfo);
         }else if(power==2){
-          m = gson.toJson(employeeImpl.pp(power,empArea,empPart));
+            PageInfo<Employee> pageInfo = new PageInfo<Employee>(employeeImpl.pp(power,empArea,empPart));
+            m = gson.toJson(pageInfo);
         }
         response.setHeader("Content-type", "text/html;charset=UTF-8");
         response.setCharacterEncoding("UTF-8");
@@ -97,7 +111,8 @@ public class    EmployeeController {
                                 @RequestParam(value = "empId")int id,
                                 @RequestParam(value = "empName")String empName,
                                @RequestParam(value = "empPhone")String empPhone,
-                               @RequestParam (value = "empPart")String empPart,
+                                @RequestParam(value = "empBranch")String empBranch,
+                                @RequestParam (value = "empPart")String empPart,
                                @RequestParam(value = "empJob")String empJob,
                                @RequestParam(value = "empArea")String empArea,
                                @RequestParam(value = "empEntry")String empEntry,
@@ -105,7 +120,7 @@ public class    EmployeeController {
                                @RequestParam(value = "uName")String uName,
                                @RequestParam(value = "password")String password,
                                HttpServletResponse response){
-        Employee employee = new Employee(id,empName,empPhone,empPart,empJob,empArea,empEntry,empType,uName,password);
+        Employee employee = new Employee(id,empName,empPhone,empBranch,empPart,empJob,empArea,empEntry,empType,uName,password);
         employeeImpl.updateEmployee(employee);
         response.setHeader("Content-type", "text/html;charset=UTF-8");
         response.setCharacterEncoding("UTF-8");
@@ -122,11 +137,16 @@ public class    EmployeeController {
     @RequestMapping("selectOneEmployee.html")
     public void selectOneEmployee(@RequestParam(value = "empName")String empName,
                                     @RequestParam(value ="empArea") String empArea,
-                                    @RequestParam(value = "empPart")String empPart
+                                    @RequestParam(value = "empPart")String empPart,
+                                    @RequestParam(value = "empType")String empType,
+                                    @RequestParam(value = "pn") int pn
             ,HttpServletResponse response){
-        List<Employee> e = employeeImpl.selectOneEmployee(empName,empArea,empPart);
-        Gson gson = new Gson();
-        String json = gson.toJson(e);
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+        int pagesize=20;
+        PageHelper.startPage(pn,pagesize);
+        List<Employee> e = employeeImpl.selectOneEmployee(empName,empArea,empPart,empType);
+        PageInfo<Employee> pageInfo = new PageInfo<Employee>(e);
+        String json = gson.toJson(pageInfo);
         response.setHeader("Content-type", "text/html;charset=UTF-8");
         response.setCharacterEncoding("UTF-8");
         try {
@@ -140,8 +160,42 @@ public class    EmployeeController {
             }
         }
     }
+    @RequestMapping("uNameIsExist.html")
+    public void uNameIsExist(@RequestParam(value = "uName")String uName,HttpServletResponse response){
+
+    }
     @RequestMapping("toEmployee.html")
     public String toEmployee(){
         return "index";
+    }
+    @RequestMapping("selectHouseManager.html")
+    public void selectHouseManager(@RequestParam(value = "branch")String branch,
+                                   @RequestParam(value = "department")String depa,
+                                   HttpServletResponse response){
+        List<String> list = employeeImpl.selectHouseManager(branch,depa);
+        Gson gson = new Gson();
+        String json = gson.toJson(list);
+        response.setHeader("Content-Type","text/html,charset=utf-8");
+        response.setCharacterEncoding("UTF-8");
+        try {
+            response.getWriter().write(json);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    @RequestMapping("selectSe.html")
+    public void selectSe(@RequestParam(value = "branch")String branch,
+                         @RequestParam(value = "department")String depa,
+                         HttpServletResponse response){
+        List<String> list = employeeImpl.selectSe(branch,depa);
+        Gson gson = new Gson();
+        String json = gson.toJson(list);
+        response.setHeader("Content-Type","text/html,charset=utf-8");
+        response.setCharacterEncoding("UTF-8");
+        try {
+            response.getWriter().write(json);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

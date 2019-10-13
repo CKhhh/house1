@@ -18,6 +18,7 @@
     <result column="deal_time" jdbcType="TIMESTAMP" property="dealTime" />
     <result column="deal_pic" jdbcType="VARCHAR" property="dealPic" />
     <result column="deal_note" jdbcType="VARCHAR" property="dealNote" />
+    <result column="application_person_id" jdbcType="INTEGER" property="applicationPersonId" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -80,7 +81,7 @@
   <sql id="Base_Column_List">
     id, application_time, application_person, application_branch, application_depa, application_job, 
     application_pro, application_price, application_bankcard, application_reason, application_pic, 
-    application_status, deal_person, deal_time, deal_pic, deal_note
+    application_status, deal_person, deal_time, deal_pic, deal_note, application_person_id
   </sql>
   <select id="selectByExample" parameterType="com.house.Bean.ApplicationExample" resultMap="BaseResultMap">
     select
@@ -118,13 +119,13 @@
       application_pro, application_price, application_bankcard, 
       application_reason, application_pic, application_status, 
       deal_person, deal_time, deal_pic, 
-      deal_note)
+      deal_note, application_person_id)
     values (#{id,jdbcType=INTEGER}, #{applicationTime,jdbcType=TIMESTAMP}, #{applicationPerson,jdbcType=VARCHAR}, 
       #{applicationBranch,jdbcType=VARCHAR}, #{applicationDepa,jdbcType=VARCHAR}, #{applicationJob,jdbcType=VARCHAR}, 
       #{applicationPro,jdbcType=VARCHAR}, #{applicationPrice,jdbcType=DECIMAL}, #{applicationBankcard,jdbcType=VARCHAR}, 
       #{applicationReason,jdbcType=VARCHAR}, #{applicationPic,jdbcType=VARCHAR}, #{applicationStatus,jdbcType=VARCHAR}, 
       #{dealPerson,jdbcType=VARCHAR}, #{dealTime,jdbcType=TIMESTAMP}, #{dealPic,jdbcType=VARCHAR}, 
-      #{dealNote,jdbcType=VARCHAR})
+      #{dealNote,jdbcType=VARCHAR}, #{applicationPersonId,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.house.Bean.Application">
     insert into application
@@ -177,6 +178,9 @@
       <if test="dealNote != null">
         deal_note,
       </if>
+      <if test="applicationPersonId != null">
+        application_person_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -226,6 +230,9 @@
       </if>
       <if test="dealNote != null">
         #{dealNote,jdbcType=VARCHAR},
+      </if>
+      <if test="applicationPersonId != null">
+        #{applicationPersonId,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -286,6 +293,9 @@
       <if test="record.dealNote != null">
         deal_note = #{record.dealNote,jdbcType=VARCHAR},
       </if>
+      <if test="record.applicationPersonId != null">
+        application_person_id = #{record.applicationPersonId,jdbcType=INTEGER},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -308,7 +318,8 @@
       deal_person = #{record.dealPerson,jdbcType=VARCHAR},
       deal_time = #{record.dealTime,jdbcType=TIMESTAMP},
       deal_pic = #{record.dealPic,jdbcType=VARCHAR},
-      deal_note = #{record.dealNote,jdbcType=VARCHAR}
+      deal_note = #{record.dealNote,jdbcType=VARCHAR},
+      application_person_id = #{record.applicationPersonId,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -361,6 +372,9 @@
       <if test="dealNote != null">
         deal_note = #{dealNote,jdbcType=VARCHAR},
       </if>
+      <if test="applicationPersonId != null">
+        application_person_id = #{applicationPersonId,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -380,26 +394,63 @@
       deal_person = #{dealPerson,jdbcType=VARCHAR},
       deal_time = #{dealTime,jdbcType=TIMESTAMP},
       deal_pic = #{dealPic,jdbcType=VARCHAR},
-      deal_note = #{dealNote,jdbcType=VARCHAR}
+      deal_note = #{dealNote,jdbcType=VARCHAR},
+      application_person_id = #{applicationPersonId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="selectOwnApplication" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="selectOwnApplication" parameterType="map" resultMap="BaseResultMap">
     select * from application where application_person_id = #{applicationPersonId,jdbcType=INTEGER}
   </select>
   <select id="adminSelect" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select * from application where application_status = #{applicationStatus,jdbcType=VARCHAR}
+    <if test="applicationStatus==1">
+      select * from application where application_status = #{applicationStatus,jdbcType=VARCHAR}
+    </if>
+    <if test="applicationStatus==2">
+      select * from application where application_status = #{applicationStatus,jdbcType=VARCHAR} or application_status =3
+
+    </if>
   </select>
   <select id="masterSelect" parameterType="map" resultMap="BaseResultMap">
-    select * from application where application_status = #{applicationStatus,jdbcType=VARCHAR} and application_branch = #{applicationBranch,jdbcType=VARCHAR}
+    <if test="applicationStatus==1">
+      select * from application where application_status = #{applicationStatus,jdbcType=VARCHAR} and application_branch = #{applicationBranch,jdbcType=VARCHAR}
+    </if>
+    <if test="applicationStatus==2">
+      select * from application where application_status = #{applicationStatus,jdbcType=VARCHAR} or application_status =3 and application_branch = #{applicationBranch,jdbcType=VARCHAR}
+    </if>
   </select>
   <select id="managerSelect" parameterType="map" resultMap="BaseResultMap">
-    select * from application where application_status = #{applicationStatus,jdbcType=VARCHAR} and application_branch = #{applicationBranch,jdbcType=VARCHAR} and
-    application_depa = #{applicationDepa,jdbcType=VARCHAR}
+    <if test="applicationStatus==1">
+      select * from application where application_status = #{applicationStatus,jdbcType=VARCHAR}
+      and application_branch = #{applicationBranch,jdbcType=VARCHAR} and
+      application_depa = #{applicationDepa,jdbcType=VARCHAR}
+    </if>
+    <if test="applicationStatus==2">
+      select * from application where application_status = #{applicationStatus,jdbcType=VARCHAR} or application_status =3
+      and application_branch = #{applicationBranch,jdbcType=VARCHAR} and
+      application_depa = #{applicationDepa,jdbcType=VARCHAR}
+    </if>
   </select>
   <update id="dealApplication" parameterType="map">
     update application set application_status=#{applicationStatus,jdbcType=VARCHAR} where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="idIsExist" parameterType="java.lang.Integer" resultMap="BaseResultMap" >
+  <select id="idIsExist" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select * from application where id=#{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectBlurry" parameterType="map" resultMap="BaseResultMap">
+    select * from application where application_person like CONCAT('%',#{blurry},'%')
+    or application_pro like CONCAT('%',#{blurry},'%') or application_reason like CONCAT('%',#{blurry},'%')
+    or deal_person like CONCAT('%',#{blurry},'%')
+  </select>
+  <select id="selectAllPn" resultType="java.lang.Long">
+    select count(*) from application
+  </select>
+  <select id="selectByOther">
+    select * from application where id !=0
+    <if test="applicationBranch!=null and applicationBranch!=''">
+      and applicatin_branch = #{applicationBranch,jdbcType=VARCHAR}
+    </if>
+    <if test="applicationDepa!=null and applicationDepa!=''">
+      and application_depa = #{applicationDepa,jdbcType=VARCHAR}
+    </if>
   </select>
 </mapper>

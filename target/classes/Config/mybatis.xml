@@ -5,19 +5,22 @@
 <configuration>
     <!-- 驼峰转"_","_"转驼峰 -->
     <settings>
-        <setting name="mapUnderscoreToCamelCase" value="true"/>
-        <setting name="cacheEnabled" value="true" />
-        <!--<setting name="jdbcTypeForNull" value="NULL" />-->
-        <!-- 打印sql日志 -->
-        <setting name="logImpl" value="STDOUT_LOGGING" />
-    </settings>
+    <setting name="mapUnderscoreToCamelCase" value="true"/>
+    <setting name="cacheEnabled" value="true" />
+    <!--<setting name="jdbcTypeForNull" value="NULL" />-->
+    <!-- 打印sql日志 -->
+    <setting name="logImpl" value="STDOUT_LOGGING" />
+</settings>
 
     <!-- 设置别名 -->
     <typeAliases>
         <package name="com.house.Bean"/>
     </typeAliases>
     <plugins>
-        <plugin interceptor="com.github.pagehelper.PageInterceptor"></plugin>
+        <plugin interceptor="com.github.pagehelper.PageInterceptor">
+            <property name="helperDialect" value="mysql"/>
+        </plugin>
+
     </plugins>
 
 </configuration>

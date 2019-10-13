@@ -304,6 +304,76 @@ public class EmployeeExample {
             return (Criteria) this;
         }
 
+        public Criteria andEmpBranchIsNull() {
+            addCriterion("emp_branch is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEmpBranchIsNotNull() {
+            addCriterion("emp_branch is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEmpBranchEqualTo(String value) {
+            addCriterion("emp_branch =", value, "empBranch");
+            return (Criteria) this;
+        }
+
+        public Criteria andEmpBranchNotEqualTo(String value) {
+            addCriterion("emp_branch <>", value, "empBranch");
+            return (Criteria) this;
+        }
+
+        public Criteria andEmpBranchGreaterThan(String value) {
+            addCriterion("emp_branch >", value, "empBranch");
+            return (Criteria) this;
+        }
+
+        public Criteria andEmpBranchGreaterThanOrEqualTo(String value) {
+            addCriterion("emp_branch >=", value, "empBranch");
+            return (Criteria) this;
+        }
+
+        public Criteria andEmpBranchLessThan(String value) {
+            addCriterion("emp_branch <", value, "empBranch");
+            return (Criteria) this;
+        }
+
+        public Criteria andEmpBranchLessThanOrEqualTo(String value) {
+            addCriterion("emp_branch <=", value, "empBranch");
+            return (Criteria) this;
+        }
+
+        public Criteria andEmpBranchLike(String value) {
+            addCriterion("emp_branch like", value, "empBranch");
+            return (Criteria) this;
+        }
+
+        public Criteria andEmpBranchNotLike(String value) {
+            addCriterion("emp_branch not like", value, "empBranch");
+            return (Criteria) this;
+        }
+
+        public Criteria andEmpBranchIn(List<String> values) {
+            addCriterion("emp_branch in", values, "empBranch");
+            return (Criteria) this;
+        }
+
+        public Criteria andEmpBranchNotIn(List<String> values) {
+            addCriterion("emp_branch not in", values, "empBranch");
+            return (Criteria) this;
+        }
+
+        public Criteria andEmpBranchBetween(String value1, String value2) {
+            addCriterion("emp_branch between", value1, value2, "empBranch");
+            return (Criteria) this;
+        }
+
+        public Criteria andEmpBranchNotBetween(String value1, String value2) {
+            addCriterion("emp_branch not between", value1, value2, "empBranch");
+            return (Criteria) this;
+        }
+
         public Criteria andEmpPartIsNull() {
             addCriterion("emp_part is null");
             return (Criteria) this;

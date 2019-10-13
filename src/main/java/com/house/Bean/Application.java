@@ -38,14 +38,12 @@ public class Application {
 
     private Integer applicationPersonId;
 
-    public Application(){}
-    public Application(int id,Date applicationTime,String applicationPerson,String applicationBranch,String applicationDepa,String applicationJob,
-                       String applicationPro,BigDecimal applicationPrice,String applicationBankcard,String applicationReason,String applicationPic,String applicationStatus,
-                       String dealPerson,Date dealTime,String dealPic,String dealNote,int applicationPersonId){
+    public Application(Integer id, Date applicationTime, String applicationPerson, String applicationBranch, String applicationDepa, String applicationJob, String applicationPro, BigDecimal applicationPrice, String applicationBankcard, String applicationReason, String applicationPic,
+                       String applicationStatus, String dealPerson, Date dealTime, String dealPic, String dealNote, Integer applicationPersonId) {
         this.id = id;
+        this.applicationTime = applicationTime;
         this.applicationPerson = applicationPerson;
         this.applicationBranch = applicationBranch;
-        this.applicationBankcard = applicationBankcard;
         this.applicationDepa = applicationDepa;
         this.applicationJob = applicationJob;
         this.applicationPro = applicationPro;
@@ -56,8 +54,12 @@ public class Application {
         this.applicationStatus = applicationStatus;
         this.dealPerson = dealPerson;
         this.dealTime = dealTime;
+        this.dealPic = dealPic;
         this.dealNote = dealNote;
         this.applicationPersonId = applicationPersonId;
+    }
+
+    public Application() {
     }
 
     public Integer getId() {

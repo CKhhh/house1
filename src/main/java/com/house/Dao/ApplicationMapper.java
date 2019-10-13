@@ -27,15 +27,19 @@ public interface ApplicationMapper {
     int updateByPrimaryKeySelective(Application record);
 
     int updateByPrimaryKey(Application record);
+    List<Application> selectOwnApplication(@Param("applicationPersonId") int applicationPersonId);
 
-    Application selectOwnApplication(int personId);
+    List<Application> adminSelect(@Param("applicationStatus") String applicationStatus);
 
-    List<Application> adminSelect(String status);
+    List<Application> masterSelect(@Param("applicationStatus") String applicationStatus, @Param("applicationBranch") String applicationBranch);
 
-    List<Application> masterSelect(@Param("applicationStatus")String applicationStatus,@Param("applicationBranch")String applicationBranch);
+    List<Application> managerSelect(@Param("applicationStatus") String applicationStatus, @Param("applicationBranch") String applicationBranch
+            , @Param("applicationDepa") String applicationDepa);
 
-    List<Application> managerSelect(@Param("applicationStatus")String applicationStatus,@Param("applicationBranch")String applicationBranch,@Param("applicationDepa")String applicationDepa);
-
-    void dealApplication(@Param("applicationStatus")String applicationStatus,@Param("id") int id);
+    void dealApplication(@Param("applicationStatus") String applicationStatus, @Param("id") int id);
     Application idIsExist(int id);
+    List<Application> selectBlurry(@Param("blurry") String blurry);
+    int selectAllPn();
+    List <Application> selectByOther(@Param("applicationBranch")String applicationBranch,
+                                     @Param("applicationDepa")String applicationDepa);
 }

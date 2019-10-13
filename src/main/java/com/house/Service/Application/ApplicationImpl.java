@@ -19,7 +19,7 @@ public class ApplicationImpl implements ApplicationService {
      applicationMapper.insert(application);
     }
 
-    public Application selectOwnApplication(int id) {
+    public List<Application> selectOwnApplication(int id) {
         return applicationMapper.selectOwnApplication(id);
     }
 
@@ -47,5 +47,20 @@ public class ApplicationImpl implements ApplicationService {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public List<Application> selectBlurry(String blurry) {
+        return applicationMapper.selectBlurry(blurry);
+    }
+
+    @Override
+    public int selectAllPn() {
+        return applicationMapper.selectAllPn()/20+1;
+    }
+
+    @Override
+    public List<Application> selectByOther(String branch, String depa) {
+        return applicationMapper.selectByOther(branch,depa);
     }
 }

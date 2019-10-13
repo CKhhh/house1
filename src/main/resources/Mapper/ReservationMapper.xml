@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.house.Dao.ReservationMapper">
+  <resultMap id="BaseResultMap" type="com.house.Bean.Reservation">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="time" jdbcType="TIMESTAMP" property="time" />
+    <result column="area" jdbcType="VARCHAR" property="area" />
+    <result column="note" jdbcType="VARCHAR" property="note" />
+    <result column="deal_status" jdbcType="VARCHAR" property="dealStatus" />
+    <result column="deal_time" jdbcType="TIMESTAMP" property="dealTime" />
+    <result column="deal_person" jdbcType="VARCHAR" property="dealPerson" />
+    <result column="deal_note" jdbcType="VARCHAR" property="dealNote" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, name, phone, time, area, note, deal_status, deal_time, deal_person, deal_note
+  </sql>
+  <select id="selectByExample" parameterType="com.house.Bean.ReservationExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from reservation
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from reservation
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from reservation
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.house.Bean.ReservationExample">
+    delete from reservation
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.house.Bean.Reservation">
+    insert into reservation (id, name, phone, 
+      time, area, note, 
+      deal_status, deal_time, deal_person, 
+      deal_note)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+      #{time,jdbcType=TIMESTAMP}, #{area,jdbcType=VARCHAR}, #{note,jdbcType=VARCHAR}, 
+      #{dealStatus,jdbcType=VARCHAR}, #{dealTime,jdbcType=TIMESTAMP}, #{dealPerson,jdbcType=VARCHAR}, 
+      #{dealNote,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.house.Bean.Reservation">
+    insert into reservation
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="time != null">
+        time,
+      </if>
+      <if test="area != null">
+        area,
+      </if>
+      <if test="note != null">
+        note,
+      </if>
+      <if test="dealStatus != null">
+        deal_status,
+      </if>
+      <if test="dealTime != null">
+        deal_time,
+      </if>
+      <if test="dealPerson != null">
+        deal_person,
+      </if>
+      <if test="dealNote != null">
+        deal_note,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="area != null">
+        #{area,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null">
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="dealStatus != null">
+        #{dealStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="dealTime != null">
+        #{dealTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dealPerson != null">
+        #{dealPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="dealNote != null">
+        #{dealNote,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.house.Bean.ReservationExample" resultType="java.lang.Long">
+    select count(*) from reservation
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update reservation
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.name != null">
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.phone != null">
+        phone = #{record.phone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.time != null">
+        time = #{record.time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.area != null">
+        area = #{record.area,jdbcType=VARCHAR},
+      </if>
+      <if test="record.note != null">
+        note = #{record.note,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dealStatus != null">
+        deal_status = #{record.dealStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dealTime != null">
+        deal_time = #{record.dealTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.dealPerson != null">
+        deal_person = #{record.dealPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dealNote != null">
+        deal_note = #{record.dealNote,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update reservation
+    set id = #{record.id,jdbcType=INTEGER},
+      name = #{record.name,jdbcType=VARCHAR},
+      phone = #{record.phone,jdbcType=VARCHAR},
+      time = #{record.time,jdbcType=TIMESTAMP},
+      area = #{record.area,jdbcType=VARCHAR},
+      note = #{record.note,jdbcType=VARCHAR},
+      deal_status = #{record.dealStatus,jdbcType=VARCHAR},
+      deal_time = #{record.dealTime,jdbcType=TIMESTAMP},
+      deal_person = #{record.dealPerson,jdbcType=VARCHAR},
+      deal_note = #{record.dealNote,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.house.Bean.Reservation">
+    update reservation
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null">
+        time = #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="area != null">
+        area = #{area,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null">
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="dealStatus != null">
+        deal_status = #{dealStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="dealTime != null">
+        deal_time = #{dealTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dealPerson != null">
+        deal_person = #{dealPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="dealNote != null">
+        deal_note = #{dealNote,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.house.Bean.Reservation">
+    update reservation
+    set name = #{name,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      time = #{time,jdbcType=TIMESTAMP},
+      area = #{area,jdbcType=VARCHAR},
+      note = #{note,jdbcType=VARCHAR},
+      deal_status = #{dealStatus,jdbcType=VARCHAR},
+      deal_time = #{dealTime,jdbcType=TIMESTAMP},
+      deal_person = #{dealPerson,jdbcType=VARCHAR},
+      deal_note = #{dealNote,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByStatus" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select * from reservation where deal_status = #{dealStatus,jdbcType=VARCHAR}
+        order by id desc
+  </select>
+  <select id="selectBlurry" parameterType="map" resultMap="BaseResultMap">
+    select * from reservation where name like concat('%',#{blurry},'%')or phone like concat('%',#{blurry},'%')
+     or phone like concat('%',#{blurry},'%') or area like concat('%',#{blurry},'%')
+    or deal_person like concat('%',#{blurry},'%')
+    order by id desc
+      </select>
+  <select id="selectAllPn" parameterType="java.lang.String" resultType="java.lang.Integer">
+    select count(*) from application where #{dealStatus,jdbcType=VARCHAR}
+  </select>
+</mapper>

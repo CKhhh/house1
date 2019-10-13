@@ -5,6 +5,7 @@
     <id column="emp_id" jdbcType="INTEGER" property="empId" />
     <result column="emp_name" jdbcType="VARCHAR" property="empName" />
     <result column="emp_phone" jdbcType="VARCHAR" property="empPhone" />
+    <result column="emp_branch" jdbcType="VARCHAR" property="empBranch" />
     <result column="emp_part" jdbcType="VARCHAR" property="empPart" />
     <result column="emp_job" jdbcType="VARCHAR" property="empJob" />
     <result column="emp_area" jdbcType="VARCHAR" property="empArea" />
@@ -72,8 +73,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    emp_id, emp_name, emp_phone, emp_part, emp_job, emp_area, emp_entry, emp_type, emp_uname, 
-    emp_password
+    emp_id, emp_name, emp_phone, emp_branch, emp_part, emp_job, emp_area, emp_entry, 
+    emp_type, emp_uname, emp_password
   </sql>
   <select id="selectByExample" parameterType="com.house.Bean.EmployeeExample" resultMap="BaseResultMap">
     select
@@ -107,13 +108,13 @@
   </delete>
   <insert id="insert" parameterType="com.house.Bean.Employee">
     insert into employee (emp_id, emp_name, emp_phone, 
-      emp_part, emp_job, emp_area, 
-      emp_entry, emp_type, emp_uname, 
-      emp_password)
-    values (#{empId,jdbcType=INTEGER},#{empName,jdbcType=VARCHAR}, #{empPhone,jdbcType=VARCHAR},
-      #{empPart,jdbcType=VARCHAR}, #{empJob,jdbcType=VARCHAR}, #{empArea,jdbcType=VARCHAR},
-      #{empEntry,jdbcType=VARCHAR}, #{empType,jdbcType=INTEGER}, #{empUname,jdbcType=VARCHAR},
-      #{empPassword,jdbcType=VARCHAR})
+      emp_branch, emp_part, emp_job, 
+      emp_area, emp_entry, emp_type, 
+      emp_uname, emp_password)
+    values (#{empId,jdbcType=INTEGER}, #{empName,jdbcType=VARCHAR}, #{empPhone,jdbcType=VARCHAR}, 
+      #{empBranch,jdbcType=VARCHAR}, #{empPart,jdbcType=VARCHAR}, #{empJob,jdbcType=VARCHAR}, 
+      #{empArea,jdbcType=VARCHAR}, #{empEntry,jdbcType=VARCHAR}, #{empType,jdbcType=INTEGER}, 
+      #{empUname,jdbcType=VARCHAR}, #{empPassword,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.house.Bean.Employee">
     insert into employee
@@ -126,6 +127,9 @@
       </if>
       <if test="empPhone != null">
         emp_phone,
+      </if>
+      <if test="empBranch != null">
+        emp_branch,
       </if>
       <if test="empPart != null">
         emp_part,
@@ -158,6 +162,9 @@
       </if>
       <if test="empPhone != null">
         #{empPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="empBranch != null">
+        #{empBranch,jdbcType=VARCHAR},
       </if>
       <if test="empPart != null">
         #{empPart,jdbcType=VARCHAR},
@@ -200,6 +207,9 @@
       <if test="record.empPhone != null">
         emp_phone = #{record.empPhone,jdbcType=VARCHAR},
       </if>
+      <if test="record.empBranch != null">
+        emp_branch = #{record.empBranch,jdbcType=VARCHAR},
+      </if>
       <if test="record.empPart != null">
         emp_part = #{record.empPart,jdbcType=VARCHAR},
       </if>
@@ -231,6 +241,7 @@
     set emp_id = #{record.empId,jdbcType=INTEGER},
       emp_name = #{record.empName,jdbcType=VARCHAR},
       emp_phone = #{record.empPhone,jdbcType=VARCHAR},
+      emp_branch = #{record.empBranch,jdbcType=VARCHAR},
       emp_part = #{record.empPart,jdbcType=VARCHAR},
       emp_job = #{record.empJob,jdbcType=VARCHAR},
       emp_area = #{record.empArea,jdbcType=VARCHAR},
@@ -250,6 +261,9 @@
       </if>
       <if test="empPhone != null">
         emp_phone = #{empPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="empBranch != null">
+        emp_branch = #{empBranch,jdbcType=VARCHAR},
       </if>
       <if test="empPart != null">
         emp_part = #{empPart,jdbcType=VARCHAR},
@@ -279,6 +293,7 @@
     update employee
     set emp_name = #{empName,jdbcType=VARCHAR},
       emp_phone = #{empPhone,jdbcType=VARCHAR},
+      emp_branch = #{empBranch,jdbcType=VARCHAR},
       emp_part = #{empPart,jdbcType=VARCHAR},
       emp_job = #{empJob,jdbcType=VARCHAR},
       emp_area = #{empArea,jdbcType=VARCHAR},
@@ -292,24 +307,46 @@
     select * from employee where emp_uname = #{empUName,jdbcType=VARCHAR}
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
-    select * from employee
+    select * from employee where emp_type between 0 and 3
   </select>
   <select id="selectByArea" parameterType="map" resultMap="BaseResultMap">
-    select * from employee where emp_type &lt; #{empType} and emp_area={empArea,jdbcType=VARCHAR}
+    select * from employee where emp_type between 0 and #{empType}-1 and emp_area=#{empArea,jdbcType=VARCHAR}
   </select>
   <select id="selectByPart" parameterType="map" resultMap="BaseResultMap">
-    select * from employee where  emp_type &lt; #{empType} and emp_area={empArea,jdbcType=VARCHAR} and emp_part={empPart,jdbcType=VARCHAR}
+    select * from employee where  emp_type between 0 and #{empType}-1 and emp_area=#{empArea,jdbcType=VARCHAR}
+     and emp_part=#{empPart,jdbcType=VARCHAR}
   </select>
-  <select id="checkLogin" parameterType="java.lang.String">
-    select password from employee where emp_uname = #{empUName,jdbcType=VARCHAR}
+  <select id="checkLogin" parameterType="java.lang.String" resultType="java.lang.String">
+    select emp_password from employee where emp_uname = #{empUName,jdbcType=VARCHAR}
   </select>
   <select id="selectOneEmployee" parameterType="map" resultMap="BaseResultMap">
-    select * from employee where emp_name like CONCAT('%${empName}%') and emp_area=#{empArea} and emp_part=#{empPart}
+    select * from employee where emp_area=#{empArea} and emp_part=#{empPart}and emp_type between 0 and #{empType}-1
+    <if test="empName!=null and empName!=''">
+      and emp_name like CONCAT('%',#{empName},'%')
+    </if>
   </select>
   <select id="selectByUName" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select * from employee where emp_uname = #{empUName}
+    select * from employee where emp_uname = #{empUName,jdbcType=VARCHAR}
   </select>
   <select id="uNameisExist" parameterType="java.lang.String">
     select emp_uname from employee where emp_uname=#{empUName}
+  </select>
+  <select id="selectAllPn" resultType="Integer">
+    select count(*) from employee
+  </select>
+  <select id="selectBossByOther" parameterType="map" resultType="java.lang.String">
+    select emp_name from employee where emp_job='管理员' or emp_job='店长' or emp_job='经理' or emp_job ='财务'
+    <if test="empBranch!=null and empBranch!=''">
+      and emp_branch = #{empBranch,jdbcType=VARCHAR}
+    </if>
+    <if test="empPart!=null and empPart!=''">
+      and emp_part = #{empPart,jdbcType=VARCHAR}
+    </if>
+  </select>
+  <select id="selectHouseManager" parameterType="map" resultType="java.lang.String">
+    select emp_name from employee where emp_job='经理' or emp_job = '业务' and emp_branch = #{branch,jdbcType=VARCHAR} and emp_part = #{department,jdbcType=VARCHAR}
+  </select>
+  <select id="selectSe" parameterType="map" resultType="java.lang.String">
+    select emp_name from employee where emp_job=#{empJob,jdbcType=VARCHAR}  and emp_branch = #{branch,jdbcType=VARCHAR} and emp_part = #{department,jdbcType=VARCHAR}
   </select>
 </mapper>

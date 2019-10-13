@@ -7,9 +7,28 @@ public class Employee {
 
     private String empPhone;
 
+    private String empBranch;
+
     private String empPart;
 
     private String empJob;
+
+    public Employee(){}
+
+    public Employee(Integer empId, String empName, String empPhone, String empBranch,
+                    String empPart, String empJob, String empArea, String empEntry, Integer empType, String empUname, String empPassword) {
+        this.empId = empId;
+        this.empName = empName;
+        this.empPhone = empPhone;
+        this.empBranch = empBranch;
+        this.empPart = empPart;
+        this.empJob = empJob;
+        this.empArea = empArea;
+        this.empEntry = empEntry;
+        this.empType = empType;
+        this.empUname = empUname;
+        this.empPassword = empPassword;
+    }
 
     private String empArea;
 
@@ -28,20 +47,7 @@ public class Employee {
     public void setEmpId(Integer empId) {
         this.empId = empId;
     }
-    public Employee(){}
-    public Employee( int empId,String empName,String empPhone,String empPart,String empJob,String empArea,String empEntry,int empType,String empUname,String empPassword){
-        this.empId = empId;
-        this.empName = empName;
-        this.empPhone = empPhone;
-        this.empPart = empPart;
-        this.empJob = empJob;
-        this.empArea = empArea;
-        this.empEntry = empEntry;
-        this.empType = empType;
-        this.empUname = empUname;
-        this.empPassword = empPassword;
 
-    }
     public String getEmpName() {
         return empName;
     }
@@ -56,6 +62,14 @@ public class Employee {
 
     public void setEmpPhone(String empPhone) {
         this.empPhone = empPhone == null ? null : empPhone.trim();
+    }
+
+    public String getEmpBranch() {
+        return empBranch;
+    }
+
+    public void setEmpBranch(String empBranch) {
+        this.empBranch = empBranch == null ? null : empBranch.trim();
     }
 
     public String getEmpPart() {

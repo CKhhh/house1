@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.house.Dao.ComplaintMapper">
+  <resultMap id="BaseResultMap" type="com.house.Bean.Complaint">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="complaint_name" jdbcType="VARCHAR" property="complaintName" />
+    <result column="complaint_phone" jdbcType="VARCHAR" property="complaintPhone" />
+    <result column="complaint_time" jdbcType="TIMESTAMP" property="complaintTime" />
+    <result column="room_address" jdbcType="VARCHAR" property="roomAddress" />
+    <result column="complaint_thing" jdbcType="VARCHAR" property="complaintThing" />
+    <result column="deal_person" jdbcType="VARCHAR" property="dealPerson" />
+    <result column="deal_status" jdbcType="VARCHAR" property="dealStatus" />
+    <result column="deal_time" jdbcType="TIMESTAMP" property="dealTime" />
+    <result column="deal_note" jdbcType="VARCHAR" property="dealNote" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, complaint_name, complaint_phone, complaint_time, room_address, complaint_thing, 
+    deal_person, deal_status, deal_time, deal_note
+  </sql>
+  <select id="selectByExample" parameterType="com.house.Bean.ComplaintExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from complaint
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from complaint
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from complaint
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.house.Bean.ComplaintExample">
+    delete from complaint
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.house.Bean.Complaint">
+    insert into complaint (id, complaint_name, complaint_phone, 
+      complaint_time, room_address, complaint_thing, 
+      deal_person, deal_status, deal_time, 
+      deal_note)
+    values (#{id,jdbcType=INTEGER}, #{complaintName,jdbcType=VARCHAR}, #{complaintPhone,jdbcType=VARCHAR}, 
+      #{complaintTime,jdbcType=TIMESTAMP}, #{roomAddress,jdbcType=VARCHAR}, #{complaintThing,jdbcType=VARCHAR}, 
+      #{dealPerson,jdbcType=VARCHAR}, #{dealStatus,jdbcType=VARCHAR}, #{dealTime,jdbcType=TIMESTAMP}, 
+      #{dealNote,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.house.Bean.Complaint">
+    insert into complaint
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="complaintName != null">
+        complaint_name,
+      </if>
+      <if test="complaintPhone != null">
+        complaint_phone,
+      </if>
+      <if test="complaintTime != null">
+        complaint_time,
+      </if>
+      <if test="roomAddress != null">
+        room_address,
+      </if>
+      <if test="complaintThing != null">
+        complaint_thing,
+      </if>
+      <if test="dealPerson != null">
+        deal_person,
+      </if>
+      <if test="dealStatus != null">
+        deal_status,
+      </if>
+      <if test="dealTime != null">
+        deal_time,
+      </if>
+      <if test="dealNote != null">
+        deal_note,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="complaintName != null">
+        #{complaintName,jdbcType=VARCHAR},
+      </if>
+      <if test="complaintPhone != null">
+        #{complaintPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="complaintTime != null">
+        #{complaintTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="roomAddress != null">
+        #{roomAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="complaintThing != null">
+        #{complaintThing,jdbcType=VARCHAR},
+      </if>
+      <if test="dealPerson != null">
+        #{dealPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="dealStatus != null">
+        #{dealStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="dealTime != null">
+        #{dealTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dealNote != null">
+        #{dealNote,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.house.Bean.ComplaintExample" resultType="java.lang.Long">
+    select count(*) from complaint
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update complaint
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.complaintName != null">
+        complaint_name = #{record.complaintName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.complaintPhone != null">
+        complaint_phone = #{record.complaintPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.complaintTime != null">
+        complaint_time = #{record.complaintTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.roomAddress != null">
+        room_address = #{record.roomAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.complaintThing != null">
+        complaint_thing = #{record.complaintThing,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dealPerson != null">
+        deal_person = #{record.dealPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dealStatus != null">
+        deal_status = #{record.dealStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dealTime != null">
+        deal_time = #{record.dealTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.dealNote != null">
+        deal_note = #{record.dealNote,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update complaint
+    set id = #{record.id,jdbcType=INTEGER},
+      complaint_name = #{record.complaintName,jdbcType=VARCHAR},
+      complaint_phone = #{record.complaintPhone,jdbcType=VARCHAR},
+      complaint_time = #{record.complaintTime,jdbcType=TIMESTAMP},
+      room_address = #{record.roomAddress,jdbcType=VARCHAR},
+      complaint_thing = #{record.complaintThing,jdbcType=VARCHAR},
+      deal_person = #{record.dealPerson,jdbcType=VARCHAR},
+      deal_status = #{record.dealStatus,jdbcType=VARCHAR},
+      deal_time = #{record.dealTime,jdbcType=TIMESTAMP},
+      deal_note = #{record.dealNote,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.house.Bean.Complaint">
+    update complaint
+    <set>
+      <if test="complaintName != null">
+        complaint_name = #{complaintName,jdbcType=VARCHAR},
+      </if>
+      <if test="complaintPhone != null">
+        complaint_phone = #{complaintPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="complaintTime != null">
+        complaint_time = #{complaintTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="roomAddress != null">
+        room_address = #{roomAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="complaintThing != null">
+        complaint_thing = #{complaintThing,jdbcType=VARCHAR},
+      </if>
+      <if test="dealPerson != null">
+        deal_person = #{dealPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="dealStatus != null">
+        deal_status = #{dealStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="dealTime != null">
+        deal_time = #{dealTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dealNote != null">
+        deal_note = #{dealNote,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.house.Bean.Complaint">
+    update complaint
+    set complaint_name = #{complaintName,jdbcType=VARCHAR},
+      complaint_phone = #{complaintPhone,jdbcType=VARCHAR},
+      complaint_time = #{complaintTime,jdbcType=TIMESTAMP},
+      room_address = #{roomAddress,jdbcType=VARCHAR},
+      complaint_thing = #{complaintThing,jdbcType=VARCHAR},
+      deal_person = #{dealPerson,jdbcType=VARCHAR},
+      deal_status = #{dealStatus,jdbcType=VARCHAR},
+      deal_time = #{dealTime,jdbcType=TIMESTAMP},
+      deal_note = #{dealNote,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectAllByStatus" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select * from complaint where deal_status=#{dealStatus,jdbcType=VARCHAR}
+  </select>
+  <select id="selectBlurry" parameterType="map" resultMap="BaseResultMap">
+    select * from  complaint  where complaint_name like CONCAT('%',#{blurry},'%') or complaint_phone like CONCAT('%',#{blurry},'%')
+     or room_address like CONCAT('%',#{blurry},'%') or deal_person like CONCAT('%',#{blurry},'%')
+  </select>
+  <select id="selectAllPn" parameterType="java.lang.String" resultType="java.lang.Long">
+    select count(*) from application where deal_status=#{dealStatus,jdbcType=VARCHAR}
+  </select>
+</mapper>

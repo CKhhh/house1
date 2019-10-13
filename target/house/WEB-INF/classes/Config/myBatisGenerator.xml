@@ -2,8 +2,6 @@
 <!DOCTYPE generatorConfiguration
         PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
-
-
 <generatorConfiguration>
 
     <context id="DB2Tables" targetRuntime="MyBatis3">
@@ -37,7 +35,6 @@
         </javaClientGenerator>
         <!-- table指定的每个表的生成策略 -->
         <!--<table tableName="employee" domainObjectName="Employee"></table>-->
-        <table tableName="application" domainObjectName="Application"></table>
-
+        <table tableName="room" domainObjectName="Room"></table>
     </context>
 </generatorConfiguration>
